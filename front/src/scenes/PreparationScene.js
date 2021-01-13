@@ -44,29 +44,49 @@ class PreparationScene extends Scene {
         const simpleButton = document.querySelector('[data-computer="simple"]');
         const middleButton = document.querySelector('[data-computer="middle"]');
         const hardButton = document.querySelector('[data-computer="hard"]');
-
-        this.removeEventListeners.push(
-            addEventListener(manuallyButton, "click", () => this.manually())
+        const randomButton = document.querySelector('[data-type="random"]');
+        const challengeButton = document.querySelector('[data-type="challenge"]');
+        const takeChallengeButton = document.querySelector(
+            '[data-type="takeChallenge"]'
         );
 
         this.removeEventListeners.push(
-            addEventListener(randomizeButton, "click", () => this.randomize())
+            addListener(manuallyButton, "click", () => this.manually())
         );
 
         this.removeEventListeners.push(
-            addEventListener(simpleButton, "click", () =>
-                this.startComputer("simple")
+            addListener(randomizeButton, "click", () => this.randomize())
+        );
+
+        this.removeEventListeners.push(
+            addListener(simpleButton, "click", () => this.startComputer("simple"))
+        );
+
+        this.removeEventListeners.push(
+            addListener(middleButton, "click", () => this.startComputer("middle"))
+        );
+
+        this.removeEventListeners.push(
+            addListener(hardButton, "click", () => this.startComputer("hard"))
+        );
+
+        this.removeEventListeners.push(
+            addListener(randomButton, "click", () =>
+                this.app.start("online", "random")
             )
         );
 
         this.removeEventListeners.push(
-            addEventListener(middleButton, "click", () =>
-                this.startComputer("middle")
+            addListener(challengeButton, "click", () =>
+                this.app.start("online", "challenge")
             )
         );
 
         this.removeEventListeners.push(
-            addEventListener(hardButton, "click", () => this.startComputer("hard"))
+            addListener(takeChallengeButton, "click", () => {
+                const key = prompt("Ключ партии:");
+                this.app.start("online", "challenge", key);
+            })
         );
     }
 
@@ -145,10 +165,16 @@ class PreparationScene extends Scene {
             document.querySelector('[data-computer="simple"]').disabled = false;
             document.querySelector('[data-computer="middle"]').disabled = false;
             document.querySelector('[data-computer="hard"]').disabled = false;
+            document.querySelector('[data-type="random"]').disabled = false;
+            document.querySelector('[data-type="challenge"]').disabled = false;
+            document.querySelector('[data-type="takeChallenge"]').disabled = false;
         } else {
             document.querySelector('[data-computer="simple"]').disabled = true;
             document.querySelector('[data-computer="middle"]').disabled = true;
             document.querySelector('[data-computer="hard"]').disabled = true;
+            document.querySelector('[data-type="random"]').disabled = true;
+            document.querySelector('[data-type="challenge"]').disabled = true;
+            document.querySelector('[data-type="takeChallenge"]').disabled = true;
         }
     }
 
